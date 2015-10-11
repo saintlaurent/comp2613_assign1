@@ -2,6 +2,7 @@ package a00869363;
 
 
 import java.io.IOException;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,12 @@ import a00869363.io.ScoreFormat;
 
 
 public class Gis {
-
+	static final String TOTAL = "total";
+	static final String SORT_BY_GAME = "by_game";
+	static final String SORT_BY_COUNT = "by_count";
+	static final String DESC = "desc";
+	static final String PLATFORM = "platform=";
+	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
 		PlayerFormat pf = new PlayerFormat();
@@ -35,6 +41,19 @@ public class Gis {
 //		}
 //		int num = pf.calculateTotalWins(pf.createPlayer("5|Mark|Chan|mchan@oneminutemail.com|19950401"));
 //		System.out.println(num);
+		String[] flagParams = args[0].split(" ");
+		boolean selectedSortOrder = false;
+		for(int i = 0; i < flagParams.length && i < 4; i++){
+			if(flagParams[i].equals(SORT_BY_GAME) || flagParams[i].equals(SORT_BY_COUNT)){
+				
+			} else if(flagParams[i].equals(TOTAL)){
+				
+			} else if(flagParams[i].equals(DESC)){
+				
+			} else if (flagParams[i].startsWith(PLATFORM)){
+				
+			}
+		}
 		LeaderboardReportWriter lrw = new LeaderboardReportWriter();
 		List<Leaderboard> list = lrw.sortLeaderboardByCount(lrw.createLeaderboardItems());
 		LeaderboardReportWriter leaderboardWriter = new LeaderboardReportWriter();

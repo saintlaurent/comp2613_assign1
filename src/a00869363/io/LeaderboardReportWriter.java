@@ -48,7 +48,7 @@ public class LeaderboardReportWriter {
 		}
 		return filteredByPlatform;
 	}
-	public String getTitleOfGameByGameId(String gameId){
+	public static String getTitleOfGameByGameId(String gameId){
 		String title = "";
 		Map<String, String> gameIdToName = GamesFormat.getIdGameName();
 		if(gameIdToName.containsKey(gameId)){
@@ -67,8 +67,19 @@ public class LeaderboardReportWriter {
 	}
 	
 	public static Map<String, Integer> calculateTotals(){
-		
+		Map<String, Integer> gameTitleToTotal = new HashMap<String, Integer>();
+		List<Score> listOfScores = ScoreFormat.getListOfScores();
+		for(Score score : listOfScores){
+			String fullTitle = getTitleOfGameByGameId(score.getGameId());
+			if(gameTitleToTotal.containsKey(fullTitle)){
+				gameTitleToTotal.put(fullTitle, gameTitleToTotal.get(fullTitle) + 1);
+			} else {
+				gameTitleToTotal.put(fullTitle, 1);
+			}
+		}
+		return gameTitleToTotal;
 	}
+	
 	public List<Leaderboard> createLeaderboardItems(){
 		Map<String, int[]> leaderboardEntry = this.getGameNameByGamertag();
 		List<Leaderboard> rows = new ArrayList<Leaderboard>();
