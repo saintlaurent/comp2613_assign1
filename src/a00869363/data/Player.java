@@ -1,5 +1,7 @@
 package a00869363.data;
 
+import a00869363.io.PlayerFormat;
+
 public class Player {
 
 	private String id;
@@ -8,6 +10,7 @@ public class Player {
 	private String email;
 	private String gamerTag;
 	private String birthdate;
+	private int age;
 
 	/**
 	 * @param id
@@ -23,7 +26,6 @@ public class Player {
 		this.fName = fName;
 		this.lName = lName;
 		this.email = email;
-		
 		this.birthdate = birthdate;
 	}
 
@@ -73,6 +75,14 @@ public class Player {
 
 	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(String birthdate) {		
+		this.age = PlayerFormat.calculateAge(birthdate);
 	}
 
 	@Override

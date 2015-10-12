@@ -6,14 +6,16 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import a00869363.data.Persona;
 import a00869363.io.GamesFormat;
 import a00869363.io.Leaderboard;
-import a00869363.io.LeaderboardReportWriter;
+import a00869363.io.LeaderboardReportFormat;
 import a00869363.io.PersonaFormat;
 import a00869363.io.PlayerFormat;
 import a00869363.io.ScoreFormat;
+import a00869363.io.WriteToFile;
 
 
 public class Gis {
@@ -41,26 +43,35 @@ public class Gis {
 //		}
 //		int num = pf.calculateTotalWins(pf.createPlayer("5|Mark|Chan|mchan@oneminutemail.com|19950401"));
 //		System.out.println(num);
+		if(args[0].trim().equals("")){
+			System.exit(1);
+		} else if (args[0].trim().equals("players")){
+			System.exit(1);
+		} else {
+			
+		}
+		
 		String[] flagParams = args[0].split(" ");
 		boolean selectedSortOrder = false;
+		
 		for(int i = 0; i < flagParams.length && i < 4; i++){
 			if(flagParams[i].equals(SORT_BY_GAME) || flagParams[i].equals(SORT_BY_COUNT)){
-				
-			} else if(flagParams[i].equals(TOTAL)){
 				
 			} else if(flagParams[i].equals(DESC)){
 				
 			} else if (flagParams[i].startsWith(PLATFORM)){
 				
+			} else if (flagParams[i].equals(TOTAL)){
+				
 			}
 		}
-		LeaderboardReportWriter lrw = new LeaderboardReportWriter();
+		LeaderboardReportFormat lrw = new LeaderboardReportFormat();
 		List<Leaderboard> list = lrw.sortLeaderboardByCount(lrw.createLeaderboardItems());
-		LeaderboardReportWriter leaderboardWriter = new LeaderboardReportWriter();
+		LeaderboardReportFormat leaderboardWriter = new LeaderboardReportFormat();
 		for(Leaderboard l : list){
 			System.out.println(l.toString());
-		}
-		
+		} 
+			
 	}
 
 }
