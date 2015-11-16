@@ -74,6 +74,20 @@ public class LeaderboardReportWriter {
 		WriteToFile.writeReports(playerReportOutput, LEADERBOARD_FILENAME);
 		LOG.info(playerReportOutput);
 	}
+	
+	public List<Leaderboard> getLeaderboardRows(String sortBy){
+		List<Leaderboard> leaderboardRows = new ArrayList<Leaderboard>();
+		Database database = new Database();
+		LeaderboardDAO dao = new LeaderboardDAO(database);
+		try {
+			leaderboardRows = dao.getLeaderboardRows();
+		} catch (SQLException e) {
+			LOG.error("Cannot get leaderboard rows. Class: Leaderboard Report Writer. Method: getLeaderboardRows. ");
+		} catch (Exception e) {
+			LOG.error("Class: Leaderboard Report Writer. Method: getLeaderboardRows. ");
+		}
+		return leaderboardRows;
+	}
 	public List<Leaderboard> sortLeaderboard(List<Leaderboard> row, String sortCriteria, boolean desc){
 		
 		switch (sortCriteria){

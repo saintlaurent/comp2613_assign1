@@ -3,24 +3,44 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 
 import a00869363.data.Player;
+import a00869363.io.GamesFormat;
+import a00869363.io.Leaderboard;
+import a00869363.io.LeaderboardReportWriter;
+import a00869363.io.PersonaFormat;
 import a00869363.io.PlayerFormat;
+import a00869363.io.ScoreFormat;
 
 
 
 public class TestMenu {
-
+	
+	private static LeaderboardReportWriter lrw; 
+	public ByGameActionListener test1(){
+		ByGameActionListener x = this.new ByGameActionListener();
+		return x;
+	}
 	public static void main(String[] args) {
-
+		TestMenu testMenu = new TestMenu();
+		//Upload all information
+		PlayerFormat pf = new PlayerFormat(); 
+		PersonaFormat personaFormat = new PersonaFormat(); 
+		GamesFormat gamesFormat = new GamesFormat();
+		ScoreFormat scoreFormat = new ScoreFormat();
+		lrw = new LeaderboardReportWriter();
 	
 		// Create the menu bar
 	    JMenuBar menuBar = new JMenuBar();
 
 	    // Create a menu
+	    /**
+	     * 
+	     */
 	    JMenu menuFile = new JMenu(MenuName.File.toString());
 	    JMenuItem quitMenuItem = new JMenuItem("Quit");
 	    quitMenuItem.addActionListener(new QuitActionListener());
@@ -36,7 +56,10 @@ public class TestMenu {
 	    JMenu menuReports = new JMenu(MenuName.Reports.toString());
 	    menuReports.add(new JMenuItem("Total"));
 	    menuReports.add(new JMenuItem("Descending"));
-	    menuReports.add(new JMenuItem("By Game"));
+	    JMenuItem byGameMenuItem = new JMenuItem("By Game");
+	    byGameMenuItem.addActionListener(testMenu.test1());
+	    menuReports.add(byGameMenuItem);
+	    
 	    menuReports.add(new JMenuItem("By Count"));
 	    menuReports.add(new JMenuItem("Gamertag"));
 	    
@@ -61,6 +84,16 @@ public class TestMenu {
 	private enum MenuName {
 		File, Lists, Reports, Help;
 	}
+	private class ByGameActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {			
+			List<Leaderboard> leaderboardRows = lrw.getLeaderboardRows("game_name");
+			for(Leaderboard lb :leaderboardRows ){
+				System.out.println(lb.toString());
+			}
+		}
+	}
 	
 }
 	class QuitActionListener implements ActionListener {
@@ -68,6 +101,7 @@ public class TestMenu {
 	    System.exit(0);
 	  }
 	}
+	
 	
 	class PlayerActionListener implements ActionListener {
 

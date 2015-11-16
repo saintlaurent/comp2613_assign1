@@ -25,6 +25,7 @@ import a00869363.io.PersonaFormat;
 import a00869363.io.PlayerFormat;
 import a00869363.io.PlayerReportWriter;
 import a00869363.io.ScoreFormat;
+
 import javax.swing.*;
 
 
@@ -45,7 +46,12 @@ public class Gis {
 		PersonaFormat personaFormat = new PersonaFormat(); 
 		GamesFormat gamesFormat = new GamesFormat();
 		ScoreFormat scoreFormat = new ScoreFormat();
-		LeaderboardReportWriter lrw = new LeaderboardReportWriter();System.exit(0);
+		LeaderboardReportWriter lrw = new LeaderboardReportWriter();
+		List<Leaderboard> leaderboardRows = lrw.getLeaderboardRows("game_name");
+		for(Leaderboard lb :leaderboardRows ){
+			System.out.println(lb.toString());
+		}
+		System.exit(0);
 		
 		if(args.length == 0){
 			//if no command line arguments are entered, the default leaderboard_report.txt will be produced
