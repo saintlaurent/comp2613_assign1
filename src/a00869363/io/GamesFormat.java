@@ -1,21 +1,50 @@
+/**
+ * Project: A00869363Gis
+ * File: GamesFormat.java
+ * Date: Oct 24th, 2015
+ * Time: 10:14 AM	
+ */
+/**
+ * @author Catherine Li, A00869363
+ * This class creates the Game objects from the games data file
+ *
+ */
 package a00869363.io;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import a00869363.dao.Database;
+import a00869363.dao.GamesDAO;
+import a00869363.dao.PersonasDAO;
 import a00869363.data.Game;
 
 public class GamesFormat {
 	List<Game> listOfGames;
-	
+	private static final Logger LOG = LogManager.getLogger(GamesFormat.class);
 	public GamesFormat() {
 		super();
 		this.listOfGames = createGames();
+		Database db = new Database(); 
+		GamesDAO dao = new GamesDAO(db);
+		try {
+			dao.create();
+			for(Game game : listOfGames){
+				dao.addGame(game);
+			}
+		} catch (SQLException e) {
+			LOG.error("Error creating games table. Class: GamesFormat. Method: Constructor.");
+		}
 	}	
 	public static List<Game> createGames(){
+		
 		List<Game> listOfGames = new ArrayList<Game>();
 		try {
 			List<String> gameInfo = FileInput.readFile("games.dat");
@@ -24,7 +53,7 @@ public class GamesFormat {
 				listOfGames.add(new Game(infoArray[0], infoArray[1], infoArray[2]));
 			}
 		} catch (IOException e) {			
-			e.printStackTrace();
+			LOG.error("Error reading games infomation file.");
 		}
 		return listOfGames;
 	}

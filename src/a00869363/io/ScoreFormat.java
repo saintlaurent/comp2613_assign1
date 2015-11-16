@@ -1,20 +1,50 @@
+/**
+ * Project: A00869363Gis
+ * File: ScoreFormat.java
+ * Date: Oct 24th, 2015
+ * Time: 10:14 AM	
+ */
+/**
+ * @author Catherine Li, A00869363
+ * This class reads the score data file and creates the scores objects
+ *
+ */
 package a00869363.io;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import a00869363.dao.Database;
+import a00869363.dao.PersonasDAO;
+import a00869363.dao.ScoresDAO;
 import a00869363.data.Score;
 
 
 public class ScoreFormat {
-	static final String FILENAME = "scores.dat";
-	
+	private static final Logger LOG = LogManager.getLogger(ScoreFormat.class);
+	static final String INPUT_FILENAME = "scores.dat";
 	static List<Score> listOfScores;
 
 	public ScoreFormat() {
 		super();
+		Database db = new Database(); 
+		ScoresDAO dao = new ScoresDAO(db);
 		listOfScores = createListOfScores();
+		try {
+			dao.create();
+			for (Score score : listOfScores){
+				dao.addScore(score);
+			}
+		} catch (SQLException e) {
+			LOG.error("Error creating scores table. Class: ScoreFormat. Method: constructor.");
+		}
+		
+		
 	}
 	
 	
@@ -43,16 +73,16 @@ public class ScoreFormat {
 	public static List<Score> createListOfScores(){
 		List<String> info;
 		List<Score> scores = new ArrayList<Score>();
+		LOG.info("Readings scores data file.");
 		try {
-			info = FileInput.readFile(FILENAME);
+			info = FileInput.readFile(INPUT_FILENAME);
 			for(String i : info){
 				String[] scoreInfoArray = i.split("\\|");
 				scores.add(new Score(scoreInfoArray[0], scoreInfoArray[1], 
 						scoreInfoArray[2]));
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error reading scores data file.");
 		}
 		return scores;
 	}

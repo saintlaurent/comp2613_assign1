@@ -27,6 +27,7 @@ public class Player {
 		this.lName = lName;
 		this.email = email;
 		this.birthdate = birthdate;
+		this.setAge(birthdate);
 	}
 
 	public String getId() {

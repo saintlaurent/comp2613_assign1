@@ -1,27 +1,56 @@
+/**
+ * Project: A00869363Gis
+ * File: PersonaFormat.java
+ * Date: Oct 24th, 2015
+ * Time: 10:14 AM	
+ */
+/**
+ * @author Catherine Li, A00869363
+ * This class reads the persona data file and creates persona objects
+ *
+ */
 package a00869363.io;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import a00869363.dao.Database;
+import a00869363.dao.PersonasDAO;
 import a00869363.data.Persona;
 
 public class PersonaFormat {
+	private static final Logger LOG = LogManager.getLogger(PersonaFormat.class);
 	static final String FILENAME = "personas.dat";
 	static List<Persona> listOfPersonas;
-	
+	Database database;
+	static PersonasDAO dao;
 
 	public PersonaFormat() {
 		super();
 		listOfPersonas = new ArrayList<Persona>();
 		try {
+			LOG.info("Reading personas.dat");
 			listOfPersonas = createListOfPersonas();
+			database = new Database(); 
+			dao = new PersonasDAO(database);
+			dao.create();			
+			for(Persona persona : listOfPersonas){
+				addToDatabase(persona);
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error reading personas.dat file.");
+		} catch (SQLException e) {
+			LOG.error("Error creating personas table. Class: PersonaFormat. Method: Constructor");
 		}
+		
+		
 	}
 
 	public static List<Persona> createListOfPersonas() throws IOException{
@@ -29,13 +58,20 @@ public class PersonaFormat {
 		List<Persona> personas = new ArrayList<Persona>();
 		for(String i : info){
 			String[] personaInfoArray = i.split("\\|");
- 		personas.add(new Persona(personaInfoArray[0], personaInfoArray[1], 
-					personaInfoArray[2], personaInfoArray[3]));
-		}
-		
+			Persona persona = new Persona(personaInfoArray[0], personaInfoArray[1], 
+					personaInfoArray[2], personaInfoArray[3]);
+			personas.add(persona);
+		}		
 		return personas;
 	}
 	
+	public static void addToDatabase(Persona persona){
+		try {
+			dao.addPersona(persona);
+		} catch (SQLException e) {
+			LOG.error("Cannot add persona to database. Class PersonaFormat. Method: Constructor.");
+		}
+	}
 	public static Map<String, Persona> personaIdToPersonaMap(){
 		Map<String, Persona> personaIdToPersona = new HashMap<String, Persona>();
 		List<Persona> personas = listOfPersonas;
@@ -46,11 +82,13 @@ public class PersonaFormat {
 	}
 	
 	public static List<Persona> getPersonas(String playerId){
+		
 		List<Persona> personas = null;
+		
 		try {
 			personas = PersonaFormat.createListOfPersonas();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("Error reading personas.dat file.");
 		}
 		List<Persona> playerPersonas = new ArrayList<Persona>();
 		for(Persona persona : personas){

@@ -1,3 +1,1 @@
-File readers can read files upon instantiation; therefore we don't have to create new scores/players lists every time we call the method
-User map to map persona id to person name?!?
-Consider making format objects and methods static
+1. Not sure which columns should be in players table, therefore not yet adding players to the players table

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import a00869363.data.Persona;
-import a00869363.data.Player;
 import a00869363.data.Score;
 
 public class LeaderboardReportFormat {
@@ -89,7 +88,7 @@ public class LeaderboardReportFormat {
 		    String personaID = key[0];
 		    String gameId = key[1];
 		    int[] value = entry.getValue();		    
-		    String gameName = this.getTitleOfGameByGameId(gameId);
+		    String gameName = LeaderboardReportFormat.getTitleOfGameByGameId(gameId);
 		    Persona persona = this.getPersonaById(personaID);
 		    //Get full title of game by id
 		    rows.add(new Leaderboard(value[0], value[1], gameName, persona.getGamerTag(), persona.getPlatform()));
