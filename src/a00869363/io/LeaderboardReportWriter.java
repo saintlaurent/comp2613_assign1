@@ -11,6 +11,7 @@
 package a00869363.io;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,20 +33,25 @@ public class LeaderboardReportWriter {
 	static final String SORT_BY_GAME = "by_game";
 	static final String SORT_BY_COUNT = "by_count";
 	List<Leaderboard> leaderboardRows;
-	
+	private Database db;
+	private LeaderboardDAO leaderboardDao;
 	public LeaderboardReportWriter(boolean sortDescending) {
 		super();
 	}
 
 	public LeaderboardReportWriter() {
-		super();
-		this.leaderboardRows = this.createLeaderboardItems();
-		Database db = new Database(); 
-		LeaderboardDAO dao = new LeaderboardDAO(db);
+		super();		
 		try {
-			dao.create();
-			for (Leaderboard row : this.leaderboardRows){
-				dao.addLeaderboardItem(row);
+			db = Database.getDatabaseInstance(); 
+			Connection connection = db.connect();
+			if(!Database.tableExists(connection, "leaderboard")){
+				this.leaderboardRows = this.createLeaderboardItems();
+				
+				leaderboardDao = LeaderboardDAO.getLeaderboardDao();
+				leaderboardDao.create();
+				for (Leaderboard row : this.leaderboardRows){
+					leaderboardDao.addLeaderboardItem(row);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,33 +60,29 @@ public class LeaderboardReportWriter {
 		
 	}
 	
-	public void writeToFile(List<Leaderboard> rows){
-		String playerReportOutput = "";
-		String border = "------------------------------------------------------------------------------------------------------------------------";
-		playerReportOutput += border + "\n";
-		playerReportOutput += String.format("%-12s%-24s%-24s%-12s", "Win:Loss",
-				"Game Name","Gamertag", "Platform");
-		playerReportOutput += "\n" + border + "\n";
-
-		for (int i = 0; i < rows.size(); i++) {
-			if (rows.get(i) != null) {
-				playerReportOutput += String.format("%-12s%-24s%-24s%-12s", rows.get(i).getWins() + ":" +rows.get(i).losses, 
-						rows.get(i).getGameName(), rows.get(i).gamerTag, rows.get(i).getPlatform());
-				playerReportOutput += "\n";
-			}
-		}
-		
-		playerReportOutput += border;
-		WriteToFile.writeReports(playerReportOutput, LEADERBOARD_FILENAME);
-		LOG.info(playerReportOutput);
-	}
+//	public static String[] formatOutput(List<Leaderboard> rows){
+//		String[] playerReportOutput = new String[rows.size() + 5];
+//		String border = "------------------------------------------------------------------------------------------------------------------------";
+//		playerReportOutput[0] = border;
+//		playerReportOutput[1] = String.format("%-12s%-24s%-24s%12s%22s", "Win:Loss",
+//				"Game Name","Gamertag", "Platform", "");
+//		playerReportOutput[2] = border;
+//
+//		for (int i = 0; i < rows.size(); i++) {
+//			if (rows.get(i) != null) {
+//				playerReportOutput[i + 3] = String.format("%-12s%-24s%-24s%12s%22s", rows.get(i).getWins() + ":" +rows.get(i).losses, 
+//						rows.get(i).getGameName(), String.format("%" + rows.get() + "s", "Hello"), rows.get(i).getPlatform(), "");
+//				
+//			}
+//		}		
+//		return playerReportOutput;
+//	}
 	
 	public List<Leaderboard> getLeaderboardRows(String sortBy){
 		List<Leaderboard> leaderboardRows = new ArrayList<Leaderboard>();
-		Database database = new Database();
-		LeaderboardDAO dao = new LeaderboardDAO(database);
+		
 		try {
-			leaderboardRows = dao.getLeaderboardRows();
+			leaderboardRows = leaderboardDao.getLeaderboardRows(null, false);
 		} catch (SQLException e) {
 			LOG.error("Cannot get leaderboard rows. Class: Leaderboard Report Writer. Method: getLeaderboardRows. ");
 		} catch (Exception e) {

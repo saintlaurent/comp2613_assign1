@@ -27,17 +27,20 @@ import a00869363.dao.PersonasDAO;
 import a00869363.data.Game;
 
 public class GamesFormat {
-	List<Game> listOfGames;
 	private static final Logger LOG = LogManager.getLogger(GamesFormat.class);
+	List<Game> listOfGames;
+	GamesDAO gamesDao;
+	Database database;
 	public GamesFormat() {
 		super();
 		this.listOfGames = createGames();
-		Database db = new Database(); 
-		GamesDAO dao = new GamesDAO(db);
+		 gamesDao = GamesDAO.getGamesGAO();
 		try {
-			dao.create();
+			database = Database.getDatabaseInstance();
+			if(!Database.tableExists(database.connect(), "games"))
+			gamesDao.create();
 			for(Game game : listOfGames){
-				dao.addGame(game);
+				gamesDao.addGame(game);
 			}
 		} catch (SQLException e) {
 			LOG.error("Error creating games table. Class: GamesFormat. Method: Constructor.");

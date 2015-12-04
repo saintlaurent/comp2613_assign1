@@ -4,7 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="lib/log4j-api-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-core-2.4.jar"/>
-	<classpathentry kind="lib" path="C:/COMP2613/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar"/>
-	<classpathentry kind="lib" path="C:/COMP2613/7 Database/7 Database/examples7/lib/derby.jar"/>
+	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="lib" path="C:/Users/VHF/AppData/Local/Microsoft/Windows/Temporary Internet Files/Content.IE5/76VKIS2R/mysql-connector-java-5.1.37-bin[1].jar"/>
+	<classpathentry kind="lib" path="C:/Users/VHF/Downloads/7 Database/7 Database/examples7/lib/derby.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

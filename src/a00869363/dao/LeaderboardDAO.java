@@ -10,24 +10,27 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import a00869363.data.Player;
 import a00869363.io.Leaderboard;
+import a00869363.ui.MainFrame;
 
 public class LeaderboardDAO extends Dao{
 	private static final Logger LOG = LogManager.getLogger(PlayerDAO.class);
 	public static final String TABLE_NAME = "leaderboard";
+	private static LeaderboardDAO leaderboardDao;
 	
-	public LeaderboardDAO(Database database) {
-		super(database, TABLE_NAME);
+	private LeaderboardDAO() {
+		super(TABLE_NAME);
 	}
-
-//	@Override
-//	public void create() throws SQLException {
-//		String createStatement = "create table leaderboard( wins VARCHAR(10), losses VARCHAR(10), game_name VARCHAR(64), gamertag VARCHAR(64), platform VARCHAR(64) )";
-//		super.create(createStatement);
-//	}
+	
+	public static LeaderboardDAO getLeaderboardDao(){
+		if(leaderboardDao == null){
+			leaderboardDao = new LeaderboardDAO();
+		}
+		return leaderboardDao;
+	}
 	public void create() throws SQLException {
 		String createStatement = "create table leaderboard( wins int(10), losses int(10), game_name VARCHAR(64), gamertag VARCHAR(64), platform VARCHAR(64) )";
+		LOG.info("Executed statement: " + createStatement);
 		super.create(createStatement);
 	}
 	/**
@@ -54,15 +57,37 @@ public class LeaderboardDAO extends Dao{
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public List<Leaderboard> getLeaderboardRows() throws SQLException, Exception {
+	public List<Leaderboard> getLeaderboardRows(String order, boolean desc) throws SQLException, Exception {
 		Connection connection;
 		Statement statement = null;
 		List<Leaderboard> leaderboardRows = new ArrayList<Leaderboard>();
 		try {
 			connection = database.connect();
 			statement = connection.createStatement();
+			String sqlString = "";
+			if(order == null){
+				sqlString = String.format("SELECT * FROM " + TABLE_NAME);
+			} else {
+				
+				if(order.equals("byGame")){
+					if(MainFrame.filterGamertag.equals("")){
+						sqlString = String.format("SELECT * FROM " + TABLE_NAME + " ORDER BY game_name");
+					} else {					
+						sqlString = String.format("SELECT * FROM " + TABLE_NAME + " WHERE gamertag = '" + MainFrame.filterGamertag +"' ORDER BY game_name");
+					}					
+				} else {
+					if(MainFrame.filterGamertag.equals("")){
+						sqlString = String.format("SELECT * FROM " + TABLE_NAME +" ORDER BY (wins+losses)");
+					} else {
+						sqlString = String.format("SELECT * FROM " + TABLE_NAME +" WHERE gamertag= '" + MainFrame.filterGamertag + "' ORDER BY (wins+losses)");
+					}
+				}
+				
+				if(desc){
+					sqlString += " DESC";
+				}
+			}
 			
-			String sqlString = String.format("SELECT * FROM " + TABLE_NAME);
 			ResultSet resultSet = statement.executeQuery(sqlString);
 			
 			while (resultSet.next()) {

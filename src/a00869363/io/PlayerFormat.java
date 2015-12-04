@@ -12,6 +12,7 @@
 package a00869363.io;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -29,6 +30,8 @@ import a00869363.dao.*;
 public class PlayerFormat {
 	private static final Logger LOG = LogManager.getLogger(PlayerFormat.class);
 	List<Player> listOfPlayers;
+	Database db;
+	PlayerDAO playerDAO;
 	static final String OUTPUT_FILENAME = "players_report.txt";
 	static final String INPUT_FILENAME = "players.dat";
 	public List<Player> getListOfPlayers() {
@@ -38,27 +41,27 @@ public class PlayerFormat {
 	public PlayerFormat() {
 		super();
 		List<Player> listOfPlayers = new ArrayList<Player>();
-		Database db = new Database(); 
-		PlayerDAO playerDAO = new PlayerDAO(db);
+		db = Database.getDatabaseInstance(); 
+		Connection connection = db.connect();
+		playerDAO = PlayerDAO.getPlayerDAO();
 		try {
-			playerDAO.create();
+			if(!Database.tableExists(connection, "players")){
+				playerDAO.create();
+				LOG.info("Reading player infomation file.");
+				List<String> arrayOfInfo = FileInput.readFile(INPUT_FILENAME);
+				for(String line : arrayOfInfo){
+					Player player = this.createPlayer(line);
+					listOfPlayers.add(player);
+					playerDAO.add(player);
+				}
+			}			
 		} catch (SQLException e1) {
 			LOG.error("Cannot create players table. Class: PlayerFormat.");
-		}
-		try {
-			LOG.info("Reading player infomation file.");
-			List<String> arrayOfInfo = FileInput.readFile(INPUT_FILENAME);
-			for(String line : arrayOfInfo){
-				Player player = this.createPlayer(line);
-				listOfPlayers.add(player);
-				//playerDAO.add(player);
-			}
 		} catch (IOException e) {
 			LOG.error("Problem reading player data file.");
-		} 
-//		catch (SQLException e) {
-//			LOG.error("Error in adding player. Class: PlayerFormat.");
-//		}
+		}
+
+
 		this.listOfPlayers = listOfPlayers;
 	}
 

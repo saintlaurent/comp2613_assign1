@@ -9,31 +9,38 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
-
-
 import a00869363.data.Player;
 
 
 public class PlayerDAO extends Dao {
 	private static final Logger LOG = LogManager.getLogger(PlayerDAO.class);
 	public static final String TABLE_NAME = "players";
-	
+	private static PlayerDAO playerDao;
 	/**
 	 * Constructor
 	 * @param database
 	 */
-	public PlayerDAO(Database database) {
-		super(database, TABLE_NAME);
+	private PlayerDAO() {
+		super(TABLE_NAME);
 	}
 
+	public static PlayerDAO getPlayerDAO(){
+		if(playerDao == null){
+			playerDao = new PlayerDAO();
+		}
+		return playerDao;
+	}
 	/**
 	 * Creates players table, calls parent create() method
 	 */
 	public void create() throws SQLException {		
 		String createStatement = "create table players(playerId VARCHAR(10) not null, first_name VARCHAR(64), last_name VARCHAR(64), email VARCHAR(64), birthdate VARCHAR(64), primary key (playerId) )";
 		super.create(createStatement);
+	}
+	
+	public void delete(Player player) throws SQLException{
+		String deleteStatement = "DELETE FROM " + TABLE_NAME + " WHERE playerId = " + player.getId();
+		super.delete(deleteStatement);
 	}
 	
 	/**
@@ -74,12 +81,11 @@ public class PlayerDAO extends Dao {
 			statement = connection.createStatement();
 			
 			String sqlString = String
-			        .format("UPDATE %s set %s='%s', %s='%s', %s='%s', %s='%s', %s='%s', %s='%s', %s='%s', %s='%s', %s='%s' WHERE %s='%s'",
+			        .format("UPDATE %s set %s='%s', %s='%s', %s='%s', %s='%s' WHERE %s='%s'",
 			                tableName, //
 			                "first_name", player.getfName(),
 			                "last_name", player.getlName(),
 			                "email", player.getEmail(),
-			                "gamertag", player.getGamerTag(),
 			                "birthdate", player.getBirthdate(),
 			                "playerId", player.getId());
 			System.out.println(sqlString);
@@ -135,12 +141,11 @@ public class PlayerDAO extends Dao {
 			Connection connection = database.connect();
 			statement = connection.createStatement();
 			String insertString = String.format(
-			        "insert into %s values('%s', '%s', '%s', '%s', '%s', '%s')", tableName, 
+			        "insert into %s values('%s', '%s', '%s', '%s', '%s')", tableName, 
 			        player.getId(), 
 			        player.getfName(), 
 			        player.getlName(), 
-			        player.getEmail(), 
-			        player.getGamerTag(), 
+			        player.getEmail(),
 			        player.getBirthdate()
 			        ); 
 			System.out.println(insertString);
@@ -186,13 +191,19 @@ public class PlayerDAO extends Dao {
 		Player player = null;
 		Connection connection;
 		Statement statement = null;
+		String player_id = "";
 		try {
 			connection = database.connect();
 			statement = connection.createStatement();
 			// Execute a statement
-			String sqlString = "SELECT * FROM " + tableName + " where gamertag = '" + gamertag + "'";
+			String sqlString = "SELECT * FROM personas where gamertag = '" + gamertag + "'";
 			System.out.println(sqlString);
-			ResultSet resultSet = statement.executeQuery(sqlString);
+			ResultSet result1 = statement.executeQuery(sqlString);
+			while (result1.next()) {
+				player_id = result1.getString("player_id");
+			}
+			String selectPlayer = "SELECT * FROM players where playerId = '" + player_id + "'";
+			ResultSet resultSet = statement.executeQuery(selectPlayer);
 			
 			while (resultSet.next()) {
 				player = new Player(
@@ -208,5 +219,25 @@ public class PlayerDAO extends Dao {
 			close(statement);
 		}
 		return player;
+	}
+	
+	public List<Player> selectAll(){
+		List<Player> players = new ArrayList<Player>();
+		ResultSet resultSet = super.selectAllFromDb();
+		
+		try {
+			while (resultSet.next()) {
+				players.add(new Player(
+						String.valueOf(resultSet.getInt("playerId")),
+						resultSet.getString("first_name"),
+						resultSet.getString("last_name"),
+						resultSet.getString("email"),
+						resultSet.getString("birthdate")
+						));
+			}
+		} catch (SQLException e) {
+			LOG.error("Could not select all players from database.");
+		}
+		return players;
 	}
 }

@@ -29,17 +29,22 @@ public class ScoreFormat {
 	private static final Logger LOG = LogManager.getLogger(ScoreFormat.class);
 	static final String INPUT_FILENAME = "scores.dat";
 	static List<Score> listOfScores;
+	private Database db;
+	private ScoresDAO dao;
 
 	public ScoreFormat() {
 		super();
-		Database db = new Database(); 
-		ScoresDAO dao = new ScoresDAO(db);
+		db = Database.getDatabaseInstance(); 
+		dao = ScoresDAO.getScoresDao();
 		listOfScores = createListOfScores();
 		try {
-			dao.create();
+			if(!Database.tableExists(db.connect(), "scores")){
+				dao.create();
 			for (Score score : listOfScores){
 				dao.addScore(score);
+				}
 			}
+			
 		} catch (SQLException e) {
 			LOG.error("Error creating scores table. Class: ScoreFormat. Method: constructor.");
 		}

@@ -12,6 +12,7 @@
 package a00869363.io;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 
 import a00869363.dao.Database;
 import a00869363.dao.PersonasDAO;
@@ -38,12 +40,16 @@ public class PersonaFormat {
 		try {
 			LOG.info("Reading personas.dat");
 			listOfPersonas = createListOfPersonas();
-			database = new Database(); 
-			dao = new PersonasDAO(database);
-			dao.create();			
-			for(Persona persona : listOfPersonas){
+			database = Database.getDatabaseInstance(); 
+			dao = PersonasDAO.getPersonasDAO();
+			dao.create();	
+			Connection connection = database.connect();
+			if(! Database.tableExists(connection, "personas")){
+				for(Persona persona : listOfPersonas){
 				addToDatabase(persona);
+				}
 			}
+			
 		} catch (IOException e) {
 			LOG.error("Error reading personas.dat file.");
 		} catch (SQLException e) {
@@ -69,7 +75,8 @@ public class PersonaFormat {
 		try {
 			dao.addPersona(persona);
 		} catch (SQLException e) {
-			LOG.error("Cannot add persona to database. Class PersonaFormat. Method: Constructor.");
+			//LOG.error("Cannot add persona to database. Class PersonaFormat. Method: Constructor.");
+			e.printStackTrace();
 		}
 	}
 	public static Map<String, Persona> personaIdToPersonaMap(){

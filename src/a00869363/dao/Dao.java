@@ -1,19 +1,17 @@
 package a00869363.dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-
-
 
 public abstract class Dao {
 
 	protected final Database database;
 	protected final String tableName;
 
-	protected Dao(Database database, String tableName) {
-		this.database = database;
+	protected Dao(String tableName) {
+		this.database = Database.getDatabaseInstance();
 		this.tableName = tableName;
 	}
 
@@ -24,12 +22,11 @@ public abstract class Dao {
 		try {
 			Connection connection = database.connect();
 			statement = connection.createStatement();
-			if(Database.tableExists(connection, tableName)){
-				//drop table
-				String dropTable = "DROP TABLE " + tableName;
-				statement.executeUpdate(dropTable);
-			}
-			statement.executeUpdate(createStatement);
+			
+			//Only create the table if it doesn't exist already
+			if(!Database.tableExists(connection, tableName)){
+				statement.executeUpdate(createStatement);
+			}			
 		} finally {
 			close(statement);
 		}
@@ -45,7 +42,17 @@ public abstract class Dao {
 			close(statement);
 		}
 	}
-
+	
+	protected void delete(String deleteStatement) throws SQLException {
+		Statement statement = null;
+		try {
+			Connection connection = database.connect();
+			statement = connection.createStatement();
+			statement.executeUpdate(deleteStatement);
+		} finally {
+			close(statement);
+		}
+	}
 	public void drop() throws SQLException {
 		Statement statement = null;
 		try {
@@ -67,6 +74,23 @@ public abstract class Dao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected ResultSet selectAllFromDb(){
+		Connection connection;
+		Statement statement = null;
+		connection = database.connect();
+		ResultSet resultSet = null;
+		try {
+			statement = connection.createStatement();
+			String sqlString = String.format("SELECT * FROM " + tableName);
+			 resultSet = statement.executeQuery(sqlString);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			//close(statement);
+		}
+		return resultSet;		
 	}
 
 }

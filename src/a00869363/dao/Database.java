@@ -12,13 +12,13 @@ import org.apache.logging.log4j.Logger;
 public class Database {
 	
 	private static final Logger LOG = LogManager.getLogger(Database.class);
-
+	private static Database database;
 	/**
 	 * MySQL credentials
 	 */
 	public static final String DB_DRIVER_KEY = "com.mysql.jdbc.Driver";
 	public static final String DB_URL_KEY = "jdbc:mysql://localhost:3306/test";
-	public static final String DB_USER_KEY = "root";
+	public static final String DB_USER_KEY = "";
 	public static final String DB_PASSWORD_KEY = "";
 	
 	/**
@@ -31,10 +31,20 @@ public class Database {
 	
 	private static Connection connection;
 	
+	private Database(){
+		
+	}
+	
 	public void run(){
 		connect();
 	}
 	
+	public static Database getDatabaseInstance(){
+		if(database == null){
+			database = new Database();
+		}
+		return database;
+	}
 	public Connection connect(){
 		
 		try {

@@ -1,1 +1,2 @@
-1. Not sure which columns should be in players table, therefore not yet adding players to the players table
+1. Set mnemonics
+2. Log errors and error messages
