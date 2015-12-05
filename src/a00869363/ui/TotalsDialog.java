@@ -38,9 +38,6 @@ public class TotalsDialog extends JDialog {
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		{
-			String[] test = new String[]{"one", "two", "three"};
-		}
 		
 		{
 			JPanel buttonPane = new JPanel();

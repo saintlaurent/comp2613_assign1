@@ -4,27 +4,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import a00869363.dao.Database;
-import a00869363.dao.LeaderboardDAO;
-import a00869363.dao.PersonasDAO;
-import a00869363.dao.ScoresDAO;
 import a00869363.io.GamesFormat;
-import a00869363.io.Leaderboard;
 import a00869363.io.LeaderboardReportWriter;
 import a00869363.io.PersonaFormat;
 import a00869363.io.PlayerFormat;
 import a00869363.io.ScoreFormat;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,10 +24,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -65,6 +52,7 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		LOG.info("Starting MainFrame.");
 		this.loadData();
 		this.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

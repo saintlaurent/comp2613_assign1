@@ -1,15 +1,11 @@
 package a00869363.ui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-
 import a00869363.dao.Database;
 import a00869363.dao.PersonasDAO;
 import a00869363.dao.PlayerDAO;
@@ -32,8 +28,6 @@ public class PlayersDialog extends JDialog {
 	PersonasDAO dao;
 	PlayerDAO playerDao;
 	
-	private final JPanel contentPanel = new JPanel();
-
 	/**
 	 * Launch the application.
 	 */

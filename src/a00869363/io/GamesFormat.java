@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Logger;
 
 import a00869363.dao.Database;
 import a00869363.dao.GamesDAO;
-import a00869363.dao.PersonasDAO;
 import a00869363.data.Game;
 
 public class GamesFormat {

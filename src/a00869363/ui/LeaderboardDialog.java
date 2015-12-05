@@ -1,13 +1,10 @@
 package a00869363.ui;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import a00869363.dao.Database;
 import a00869363.dao.LeaderboardDAO;
 import a00869363.io.Leaderboard;
@@ -15,7 +12,6 @@ import javax.swing.JScrollPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.Dimension;
 import javax.swing.JTable;
 
 public class LeaderboardDialog extends JDialog {
@@ -23,7 +19,6 @@ public class LeaderboardDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOG = LogManager.getLogger(LeaderboardDialog.class);
 	
-	private static Database db;
 	private static LeaderboardDAO dao;
 	
 	private final JPanel contentPanel = new JPanel();
@@ -35,7 +30,7 @@ public class LeaderboardDialog extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			db = Database.getDatabaseInstance(); 
+			Database.getDatabaseInstance(); 
 			dao = LeaderboardDAO.getLeaderboardDao();
 			List<Leaderboard> rows = dao.getLeaderboardRows("byGame", false);
 			LeaderboardDialog dialog = new LeaderboardDialog(rows);
@@ -51,7 +46,7 @@ public class LeaderboardDialog extends JDialog {
 	 */
 	public LeaderboardDialog(List<Leaderboard> rows) {
 		LOG.info("Creating leaderboard dialog.");
-		db = Database.getDatabaseInstance(); 
+		Database.getDatabaseInstance(); 
 		dao = LeaderboardDAO.getLeaderboardDao();
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setVisible(true);

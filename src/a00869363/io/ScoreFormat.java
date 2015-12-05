@@ -20,7 +20,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import a00869363.dao.Database;
-import a00869363.dao.PersonasDAO;
 import a00869363.dao.ScoresDAO;
 import a00869363.data.Score;
 

@@ -1,13 +1,9 @@
 package a00869363.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
@@ -24,7 +20,6 @@ public class ScoresDialog extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
 	private static final Logger LOG = LogManager.getLogger(ScoresDialog.class);
 
 	/**
@@ -65,7 +60,7 @@ public class ScoresDialog extends JDialog {
 	}
 	
 	public List<Score> getScores(){
-		Database database = Database.getDatabaseInstance();
+		Database.getDatabaseInstance();
 		ScoresDAO dao = ScoresDAO.getScoresDao();
 		List<Score> scores = dao.selectAll();
 		return scores;
