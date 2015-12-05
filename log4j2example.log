@@ -543,3 +543,4 @@ Win:Loss    Game Name               Gamertag                Platform
 2015-11-23 21:12:16,381 AWT-EventQueue-0 INFO  dao.PlayerDAO (LeaderboardDAO.java:26) - Executed statement: create table leaderboard( wins int(10), losses int(10), game_name VARCHAR(64), gamertag VARCHAR(64), platform VARCHAR(64) )
 2015-11-23 21:12:21,111 AWT-EventQueue-0 INFO  ui.PersonasDialog (PersonasDialog.java:63) - Creating personas dialog.
 2015-11-23 21:13:04,503 AWT-EventQueue-0 INFO  ui.LeaderboardDialog (LeaderboardDialog.java:49) - Creating leaderboard dialog.
+2015-12-04 20:37:34,661 main INFO  a00869363.Gis (Gis.java:35) - Starting main method
