@@ -14,6 +14,10 @@ package a00869363;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,6 +41,16 @@ public class Gis {
 		/**
 		 * Launch the application.
 		 */
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    LOG.error("Could not set Nimbus Look and Feel.");
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
