@@ -62,8 +62,6 @@ public class ScoresDialog extends JDialog {
 			JList<String> list = new JList<String>(output);
 			JScrollPane scrollPane = new JScrollPane(list);
 			this.add(scrollPane, BorderLayout.CENTER);
-		
-
 	}
 	
 	public List<Score> getScores(){

@@ -31,20 +31,18 @@ public class PersonaFormat {
 	private static final Logger LOG = LogManager.getLogger(PersonaFormat.class);
 	static final String FILENAME = "personas.dat";
 	static List<Persona> listOfPersonas;
-	Database database;
-	static PersonasDAO dao;
+	Database database = Database.getDatabaseInstance();
+	static PersonasDAO personasDao = PersonasDAO.getPersonasDAO();
 
 	public PersonaFormat() {
 		super();
 		listOfPersonas = new ArrayList<Persona>();
 		try {
 			LOG.info("Reading personas.dat");
-			listOfPersonas = createListOfPersonas();
-			database = Database.getDatabaseInstance(); 
-			dao = PersonasDAO.getPersonasDAO();
-			dao.create();	
+			listOfPersonas = createListOfPersonas();	
 			Connection connection = database.connect();
 			if(! Database.tableExists(connection, "personas")){
+				personasDao.create();	
 				for(Persona persona : listOfPersonas){
 				addToDatabase(persona);
 				}
@@ -73,7 +71,7 @@ public class PersonaFormat {
 	
 	public static void addToDatabase(Persona persona){
 		try {
-			dao.addPersona(persona);
+			personasDao.addPersona(persona);
 		} catch (SQLException e) {
 			//LOG.error("Cannot add persona to database. Class PersonaFormat. Method: Constructor.");
 			e.printStackTrace();

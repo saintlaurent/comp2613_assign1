@@ -77,13 +77,11 @@ public class PersonasDialog extends JDialog {
 			        @SuppressWarnings("unchecked")
 					JList<String> list = (JList<String>)evt.getSource();
 			        if (evt.getClickCount() == 2) {
-			            // Double-click detected
-			           
 			            editPersona(list.getSelectedValue());				     
 			        } 
 			    }
 			});
-			this.add(new JScrollPane(list));
+			this.add(new JScrollPane(list), BorderLayout.CENTER);
 	}
 	
 	/*
