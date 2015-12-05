@@ -1,2 +1,2 @@
-1. Set mnemonics
-2. Log errors and error messages
+1. Set quit mnemonic
+2. Remove the statics from the Gis class
