@@ -37,11 +37,13 @@ public class GamesFormat {
 		 gamesDao = GamesDAO.getGamesGAO();
 		try {
 			database = Database.getDatabaseInstance();
-			if(!Database.tableExists(database.connect(), "games"))
-			gamesDao.create();
+			if(!Database.tableExists(database.connect(), "games")){
+				gamesDao.create();
 			for(Game game : listOfGames){
 				gamesDao.addGame(game);
+				}
 			}
+			
 		} catch (SQLException e) {
 			LOG.error("Error creating games table. Class: GamesFormat. Method: Constructor.");
 		}
