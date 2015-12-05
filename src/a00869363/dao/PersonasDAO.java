@@ -89,8 +89,13 @@ public class PersonasDAO extends Dao{
 	public Persona selectByGamertag(String gamertag){
 		Persona persona = null;
 		Statement statement = null;
+		String sqlString = "";
 		try {
-			String sqlString = "SELECT * FROM personas WHERE gamertag = '" + gamertag + "'";			
+			if(gamertag.trim().equals("")){
+				sqlString = "SELECT * FROM personas";
+			} else {
+				sqlString = "SELECT * FROM personas WHERE gamertag = '" + gamertag + "'";	
+			}					
 			Connection connection = database.connect();
 			statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sqlString);

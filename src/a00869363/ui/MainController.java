@@ -69,8 +69,6 @@ public class MainController {
 		      int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		               "Please Enter Gamertag", JOptionPane.OK_CANCEL_OPTION);
 		      if (result == JOptionPane.OK_OPTION) {
-		    	  
-		    	  
 		    	  if(personasDao.selectByGamertag(gamertagFilter.getText().trim()) == null){
 		    		  JOptionPane.showMessageDialog(null, "Gamertag not found.");
 		    	  } else {
