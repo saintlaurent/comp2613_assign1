@@ -35,7 +35,6 @@ public class PersonasDialog extends JDialog {
 	Database db;
 	PersonasDAO dao;
 	PlayerDAO playerDao;
-	private final JPanel contentPanel = new JPanel();
 
 	/**
 	 * Launch the application.
@@ -66,11 +65,6 @@ public class PersonasDialog extends JDialog {
 		this.setVisible(true);
 		
 		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
-		
 			String[] personasRow = new String[personas.size()];
 		    //String[] test = new String[]{"one", "two", "three"};
 		    for (int i = 0; i < personasRow.length; i++) {
@@ -89,9 +83,7 @@ public class PersonasDialog extends JDialog {
 			        } 
 			    }
 			});
-			contentPanel.add(new JScrollPane(list));
-			getContentPane().add(contentPanel, BorderLayout.CENTER);
-
+			this.add(new JScrollPane(list));
 	}
 	
 	/*
