@@ -60,23 +60,6 @@ public class LeaderboardReportWriter {
 		
 	}
 	
-//	public static String[] formatOutput(List<Leaderboard> rows){
-//		String[] playerReportOutput = new String[rows.size() + 5];
-//		String border = "------------------------------------------------------------------------------------------------------------------------";
-//		playerReportOutput[0] = border;
-//		playerReportOutput[1] = String.format("%-12s%-24s%-24s%12s%22s", "Win:Loss",
-//				"Game Name","Gamertag", "Platform", "");
-//		playerReportOutput[2] = border;
-//
-//		for (int i = 0; i < rows.size(); i++) {
-//			if (rows.get(i) != null) {
-//				playerReportOutput[i + 3] = String.format("%-12s%-24s%-24s%12s%22s", rows.get(i).getWins() + ":" +rows.get(i).losses, 
-//						rows.get(i).getGameName(), String.format("%" + rows.get() + "s", "Hello"), rows.get(i).getPlatform(), "");
-//				
-//			}
-//		}		
-//		return playerReportOutput;
-//	}
 	
 	public List<Leaderboard> getLeaderboardRows(String sortBy){
 		List<Leaderboard> leaderboardRows = new ArrayList<Leaderboard>();

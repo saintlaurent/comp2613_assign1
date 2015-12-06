@@ -51,6 +51,11 @@ public class ScoresDAO extends Dao{
 		super.add(addStatement);
 	}
 	
+	public void delete(String id) throws SQLException{
+		String deleteStatement = "DELETE FROM " + TABLE_NAME + " WHERE persona_id = " + id;
+		super.delete(deleteStatement);
+	}
+	
 	public Map<String, Integer> getTotals(){
 		Connection connection;
 		Statement statement = null;
