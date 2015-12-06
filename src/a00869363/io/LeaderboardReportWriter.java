@@ -201,7 +201,6 @@ public class LeaderboardReportWriter {
 		for (Map.Entry<String, Integer> entry : gameNameToTotal.entrySet()) {
 			output+= entry.getKey() + ": " + entry.getValue() + "\n";
 		}
-		WriteToFile.appendToFile(output, LEADERBOARD_FILENAME);
 		LOG.info(output);
 	}
 	

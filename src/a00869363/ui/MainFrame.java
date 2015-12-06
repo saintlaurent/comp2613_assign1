@@ -16,6 +16,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,6 +68,7 @@ public class MainFrame extends JFrame {
 		menuBar.add(fileMenu);
 		
 		JMenuItem quitMenuItem = new JMenuItem("Quit");
+		quitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.ALT_MASK));
 		quitMenuItem.setMnemonic(KeyEvent.VK_Q);
 		quitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -137,6 +140,7 @@ public class MainFrame extends JFrame {
 		menuBar.add(helpMenu);
 		
 		JMenuItem aboutMenuItem = new JMenuItem("About", KeyEvent.VK_U);
+		aboutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		aboutMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, "Assignment 2 \n by Catherine Li A00869363");

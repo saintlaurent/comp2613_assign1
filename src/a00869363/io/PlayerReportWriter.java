@@ -60,6 +60,5 @@ public class PlayerReportWriter {
 			}
 		}
 		playerReportOutput += border;
-		WriteToFile.writeReports(playerReportOutput, PlayerFormat.OUTPUT_FILENAME);
 	}
 }
